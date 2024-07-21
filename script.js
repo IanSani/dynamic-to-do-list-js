@@ -4,8 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskList = document.getElementById('task-list');
 
     // Function to add tasks
-    function addTask() {
+    function addTask(taskText, save= true) {
+        if(!taskText){
         const taskText = taskInput.value.trim();
+        }
         if (taskText === "") {
             alert("Enter a Task");
         } else {
@@ -13,25 +15,39 @@ document.addEventListener('DOMContentLoaded', () => {
             listItem.textContent = taskText;
             const removeButton = document.createElement('button');
             removeButton.textContent = "Remove";
-            removeButton.classList.add= "remove-btn";
+            removeButton.classList.add("remove-btn");
             removeButton.addEventListener('click', function () {
                 taskList.removeChild(listItem);
+                saveTasks();
             });
 
             listItem.appendChild(removeButton);
             taskList.appendChild(listItem);
             taskInput.value = "";
+            if (save) {
+                const storedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+                storedTasks.push(taskText);
+                localStorage.setItem('tasks', JSON.stringify(storedTasks));
+            }
+            saveTasks();
         }
+        
     }
     //Function to save tasks
-    function saveTask(){
+    function saveTasks(){
         const tasks = [];
 
-        tasksList.querySelectorAll('li').forEach((tasks)=>{
-            task.push(listItem.firstchild.textContent);
+        taskList.querySelectorAll('li').forEach((listItem)=>{
+            tasks.push(listItem.firstChild.textContent);
         })
-        localStorage.getItem('tasks' JSON.stringify(tasks));
+        localStorage.setItem('tasks',JSON.stringify(tasks));
 
+    }
+
+    //Function to load tasks
+    function loadTasks(){
+        const storedTasks = JSON.parse(localStorage.getItem("tasks" || "[]"));
+        storedTasks.forEach((taskText) => addTask(taskText,false));
     }
 
     addButton.addEventListener('click', addTask);
