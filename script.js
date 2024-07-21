@@ -23,6 +23,16 @@ document.addEventListener('DOMContentLoaded', () => {
             taskInput.value = "";
         }
     }
+    //Function to save tasks
+    function saveTask(){
+        const tasks = [];
+
+        tasksList.querySelectorAll('li').forEach((tasks)=>{
+            task.push(listItem.firstchild.textContent);
+        })
+        localStorage.getItem('tasks' JSON.stringify(tasks));
+
+    }
 
     addButton.addEventListener('click', addTask);
     taskInput.addEventListener('keypress', (event) => {
